@@ -1,8 +1,10 @@
 const Producto = require('../models/Product')
+const User = require('../models/User')
 const productController = {}
 
-productController.createProduct = async (req,res)=>{
+productController.createProduct = async (req,res,next)=>{
     const {name, category, price,cantidad,alto,ancho,profundidad,peso} = req.body
+    const user = await User.findById(req.body.userId)
 
     if(name === undefined){
         return res.status(400).json({error:'content missing'})
@@ -17,10 +19,13 @@ productController.createProduct = async (req,res)=>{
             alto: alto,
             ancho: ancho,
             profundidad: profundidad,
-            peso: peso
+            peso: peso,
+            user: user._id
         })
 
-        await newProduct.save()
+        const savedProduct = await newProduct.save()
+        user.products = user.products.concat(savedProduct._id)
+        await user.save()
         res.json({message:'El producto ha sido creado'})
         
     } 

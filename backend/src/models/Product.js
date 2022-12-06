@@ -1,4 +1,4 @@
-const {Schema, model} = require('mongoose')
+const {Schema, model, default: mongoose} = require('mongoose')
 
 const productSchema = new Schema(
     {
@@ -12,7 +12,12 @@ const productSchema = new Schema(
         alto: Number,
         ancho: Number,
         profundidad:Number,
-        peso:Number
+        peso:Number,
+
+        user:{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
     },
     {
          timestamps:true
