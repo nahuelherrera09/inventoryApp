@@ -1,6 +1,6 @@
 const {Router} = require('express');
 //Requerir modelo y contenedor con la lógica
-const {createProduct, getProducts, deleteByid} = require('../controller/product.controller')
+const {createProduct, getProducts, deleteByid, updateProduct} = require('../controller/product.controller')
 const routerProduct = Router();
 
 
@@ -12,27 +12,7 @@ routerProduct.route('/')
 
 routerProduct.route('/:id')
     .delete(deleteByid)
-
-routerProduct.get('/', (req,res)=>{
-
-})
-//Obtener producto por su id 
-routerProduct.get('/', (req,res)=>{
-})
-//Elimiar un producto
-routerProduct.delete('/', (req,res)=>{
-}) 
-//Eliminar todos los prodcuctos de una categoría
-routerProduct.delete('/', (req,res)=>{
-})
-//Eliminar una categoría
-routerProduct.delete('/', (req,res)=>{
-})
-//Actualizar un producto por su id 
-routerProduct.put('/', (req,res)=>{
-})
-
-
+    .put(updateProduct)
 
 
 module.exports = routerProduct

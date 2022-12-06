@@ -3,7 +3,12 @@ const productController = {}
 
 productController.createProduct = async (req,res)=>{
     const {name, category, price,cantidad,alto,ancho,profundidad,peso} = req.body
-    try {
+
+    if(name === undefined){
+        return res.status(400).json({error:'content missing'})
+    }
+
+    
         const newProduct = new Producto({
             name: name,
             category: category,
@@ -15,12 +20,11 @@ productController.createProduct = async (req,res)=>{
             peso: peso
         })
 
-        await newProduct.save();
+        await newProduct.save()
         res.json({message:'El producto ha sido creado'})
-    } catch (error) {
-        throw new Error
-    }    
+        
     } 
+    
 
 productController.getProducts = async (req,res) =>{
     const productos = await Producto.find()
@@ -28,9 +32,26 @@ productController.getProducts = async (req,res) =>{
 }    
 
 productController.deleteByid = async (req,res) => {
-    
     await Producto.findByIdAndDelete(req.params.id)
     res.json({message:'Producto eliminado'})
+}
+
+productController.updateProduct = async (req,res) =>{
+    const {name, category, price,cantidad,alto,ancho,profundidad,peso} = req.body
+    try {
+        await Producto.findByIdAndUpdate(req.params.id, {
+            name,
+            category,
+            price,
+            cantidad,
+            alto,
+            ancho,
+            profundidad,
+            peso
+        })     
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 module.exports = productController
